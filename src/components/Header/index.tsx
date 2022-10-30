@@ -1,4 +1,4 @@
-import { ChainId } from '@uniswap/sdk'
+import { ChainId } from '@sicwen/uniswap-sdk-bsctestnet'
 import React from 'react'
 import { isMobile } from 'react-device-detect'
 import { Text } from 'rebass'

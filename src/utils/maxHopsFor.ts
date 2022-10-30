@@ -1,4 +1,4 @@
-import { ChainId, Currency, ETHER, Token, WETH } from '@uniswap/sdk'
+import { ChainId, Currency, ETHER, Token, WETH } from '@sicwen/uniswap-sdk-bsctestnet'
 
 function isEtherish(currency: Currency): boolean {
   return currency === ETHER || (currency instanceof Token && WETH[currency.chainId].equals(currency))
