@@ -7,6 +7,8 @@
     - npm install
     - npm run start
 - 启动tokenList服务
-    - node服务监听8080端口, 返回tokenList列表
+    - cd token_server
+    - node TokenList.js
+    - 返回token list
 - [合约地址](https://github.com/sicw/uniswap-v2-contracts)
 - [新增chainId](https://github.com/sicw/uniswap-v2-sdk)
