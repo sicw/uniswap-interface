@@ -1,4 +1,4 @@
-# Uniswap-v2 SDK
+# Uniswap-v2 Interface
 - 该分支用来部署uniswap-v2的前端代码
 - 从master的20200807提交中创建分支
 - 合约代码已部署到BSCTestNet
