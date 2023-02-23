@@ -90,6 +90,9 @@ export default function AddLiquidity({
 
   // get formatted amounts
   const formattedAmounts = {
+    // [a,b,c] = [1,2,3,4] => a=1 b=2 c=3
+    // 数组解构, 将typedValue数组的第一个值赋给independentField 它的值是CURRENCY_A或CURRENCY_B
+    // 数组解构, 这个解释是错的, [xxx]这个是获取xxx的变量值来做为formattedAmounts对象的属性名 可能是CURRENCY_A或CURRENCY_B
     [independentField]: typedValue,
     [dependentField]: noLiquidity ? otherTypedValue : parsedAmounts[dependentField]?.toSignificant(6) ?? ''
   }
@@ -123,6 +126,7 @@ export default function AddLiquidity({
 
   async function onAdd() {
     if (!chainId || !library || !account) return
+    // 获取router合约
     const router = getRouterContract(chainId, library, account)
 
     const { [Field.CURRENCY_A]: parsedAmountA, [Field.CURRENCY_B]: parsedAmountB } = parsedAmounts
@@ -141,6 +145,7 @@ export default function AddLiquidity({
       method: (...args: any) => Promise<TransactionResponse>,
       args: Array<string | string[] | number>,
       value: BigNumber | null
+    // 其中有一个是eth
     if (currencyA === ETHER || currencyB === ETHER) {
       const tokenBIsETH = currencyB === ETHER
       estimate = router.estimateGas.addLiquidityETH
@@ -155,6 +160,7 @@ export default function AddLiquidity({
       ]
       value = BigNumber.from((tokenBIsETH ? parsedAmountB : parsedAmountA).raw.toString())
     } else {
+      // 计算调用addLiquidity的gas费用
       estimate = router.estimateGas.addLiquidity
       method = router.addLiquidity
       args = [
@@ -173,6 +179,7 @@ export default function AddLiquidity({
     setAttemptingTxn(true)
     await estimate(...args, value ? { value } : {})
       .then(estimatedGasLimit =>
+        // 执行具体的contract方法
         method(...args, {
           ...(value ? { value } : {}),
           gasLimit: calculateGasMargin(estimatedGasLimit)
@@ -267,6 +274,7 @@ export default function AddLiquidity({
     currencies[Field.CURRENCY_A]?.symbol
   } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(6)} ${currencies[Field.CURRENCY_B]?.symbol}`
 
+  // 选择tokenA之后处理器
   const handleCurrencyASelect = useCallback(
     (currencyA: Currency) => {
       const newCurrencyIdA = currencyId(currencyA)
@@ -278,6 +286,8 @@ export default function AddLiquidity({
     },
     [currencyIdB, history, currencyIdA]
   )
+
+  // 选择tokenB之后处理器
   const handleCurrencyBSelect = useCallback(
     (currencyB: Currency) => {
       const newCurrencyIdB = currencyId(currencyB)
@@ -294,6 +304,7 @@ export default function AddLiquidity({
     [currencyIdA, history, currencyIdB]
   )
 
+  // 驳回处理器
   const handleDismissConfirmation = useCallback(() => {
     setShowConfirm(false)
     // if there was a tx hash, we want to clear the input
@@ -341,10 +352,15 @@ export default function AddLiquidity({
                 </BlueCard>
               </ColumnCenter>
             )}
+            {/*上面token的输入框*/}
             <CurrencyInputPanel
+              // 实时收集数据, 可控组件
               value={formattedAmounts[Field.CURRENCY_A]}
+              // 当用户输入时, 获取数值并计算出下面输入框的值, 并设置到value中
+              // 发送dispatcher reducer计算出新value
               onUserInput={onFieldAInput}
               onMax={() => {
+                // 获取最大值并设置到input输入框中
                 onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
               }}
               onCurrencySelect={handleCurrencyASelect}
@@ -353,9 +369,11 @@ export default function AddLiquidity({
               id="add-liquidity-input-tokena"
               showCommonBases
             />
+            {/*加号*/}
             <ColumnCenter>
               <Plus size="16" color={theme.text2} />
             </ColumnCenter>
+            {/*下面token的输入框*/}
             <CurrencyInputPanel
               value={formattedAmounts[Field.CURRENCY_B]}
               onUserInput={onFieldBInput}
