@@ -124,6 +124,7 @@ export function useDerivedMintInfo(
 
   const poolTokenPercentage = useMemo(() => {
     if (liquidityMinted && totalSupply) {
+      // 本次mint出来的lq代币 占 totalSupply+minted 的百分比
       return new Percent(liquidityMinted.raw, totalSupply.add(liquidityMinted).raw)
     } else {
       return

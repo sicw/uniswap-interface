@@ -75,6 +75,7 @@ export default function AddLiquidity({
     poolTokenPercentage,
     error
   } = useDerivedMintInfo(currencyA ?? undefined, currencyB ?? undefined)
+
   const { onFieldAInput, onFieldBInput } = useMintActionHandlers(noLiquidity)
 
   const isValid = !error
@@ -339,10 +340,13 @@ export default function AddLiquidity({
         <AddRemoveTabs adding={true} />
         <Wrapper>
           <TransactionConfirmationModal
+            // 是否展示交易确认框
             isOpen={showConfirm}
+            // 处理拒绝驳回操作
             onDismiss={handleDismissConfirmation}
             attemptingTxn={attemptingTxn}
             hash={txHash}
+            // 模态框内容
             content={() => (
               <ConfirmationModalContent
                 title={noLiquidity ? 'You are creating a pool' : 'You will receive'}
@@ -405,6 +409,8 @@ export default function AddLiquidity({
               id="add-liquidity-input-tokenb"
               showCommonBases
             />
+
+            {/*展示lq池子的价格信息 最后一个&&(<>)这样写法会计算()中的<>标签*/}
             {currencies[Field.CURRENCY_A] && currencies[Field.CURRENCY_B] && pairState !== PairState.INVALID && (
               <>
                 <GreyCard padding="0px" borderRadius={'20px'}>
@@ -457,7 +463,7 @@ export default function AddLiquidity({
                           {approvalB === ApprovalState.PENDING ? (
                             <Dots>Approving {currencies[Field.CURRENCY_B]?.symbol}</Dots>
                           ) : (
-                            'Approve ' + currencies[Field.CURRENCY_B]?.symbol
+                            'Approve sblgq ' + currencies[Field.CURRENCY_B]?.symbol
                           )}
                         </ButtonPrimary>
                       )}

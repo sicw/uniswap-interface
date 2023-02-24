@@ -12,7 +12,7 @@ export interface SerializableTransactionReceipt {
   status?: number
 }
 
-// 添加交易 action
+// 添加交易的action
 export const addTransaction = createAction<{
   chainId: ChainId
   hash: string
