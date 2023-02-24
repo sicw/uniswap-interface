@@ -129,61 +129,80 @@ export default function AddLiquidity({
     // 获取router合约
     const router = getRouterContract(chainId, library, account)
 
+    // 获取amountA, amountB
     const { [Field.CURRENCY_A]: parsedAmountA, [Field.CURRENCY_B]: parsedAmountB } = parsedAmounts
     if (!parsedAmountA || !parsedAmountB || !currencyA || !currencyB) {
       return
     }
 
+    // 计算最小值
     const amountsMin = {
       [Field.CURRENCY_A]: calculateSlippageAmount(parsedAmountA, noLiquidity ? 0 : allowedSlippage)[0],
       [Field.CURRENCY_B]: calculateSlippageAmount(parsedAmountB, noLiquidity ? 0 : allowedSlippage)[0]
     }
 
+    // 截止时间
     const deadlineFromNow = Math.ceil(Date.now() / 1000) + deadline
 
+    // 定义estimate、method、args、value
     let estimate,
       method: (...args: any) => Promise<TransactionResponse>,
       args: Array<string | string[] | number>,
       value: BigNumber | null
-    // 其中有一个是eth
+    // 其中有一个是eth token<-->eth eth<-->token
     if (currencyA === ETHER || currencyB === ETHER) {
       const tokenBIsETH = currencyB === ETHER
+      // 估算addLiquidityETH方法gas费用
       estimate = router.estimateGas.addLiquidityETH
+      // 获取addLiquidityETH合约方法
       method = router.addLiquidityETH
+      // 参数 为啥是数组类型呢
       args = [
+        // 包装token信息
         wrappedCurrency(tokenBIsETH ? currencyA : currencyB, chainId)?.address ?? '', // token
-        (tokenBIsETH ? parsedAmountA : parsedAmountB).raw.toString(), // token desired
-        amountsMin[tokenBIsETH ? Field.CURRENCY_A : Field.CURRENCY_B].toString(), // token min
-        amountsMin[tokenBIsETH ? Field.CURRENCY_B : Field.CURRENCY_A].toString(), // eth min
-        account,
+        // 期望的token数量
+        (tokenBIsETH ? parsedAmountA : parsedAmountB).raw.toString(),                         // token desired
+        amountsMin[tokenBIsETH ? Field.CURRENCY_A : Field.CURRENCY_B].toString(),             // token min
+        amountsMin[tokenBIsETH ? Field.CURRENCY_B : Field.CURRENCY_A].toString(),             // eth min
+        account,  // 账户也就是msg.sender
         deadlineFromNow
       ]
+      // 发送msg.value
       value = BigNumber.from((tokenBIsETH ? parsedAmountB : parsedAmountA).raw.toString())
     } else {
+      // token <--> token
       // 计算调用addLiquidity的gas费用
       estimate = router.estimateGas.addLiquidity
       method = router.addLiquidity
       args = [
+        // 包装tokenA
         wrappedCurrency(currencyA, chainId)?.address ?? '',
+        // 包装tokenB
         wrappedCurrency(currencyB, chainId)?.address ?? '',
+        // tokenA的数量
         parsedAmountA.raw.toString(),
+        // tokenB的数量
         parsedAmountB.raw.toString(),
         amountsMin[Field.CURRENCY_A].toString(),
         amountsMin[Field.CURRENCY_B].toString(),
         account,
         deadlineFromNow
       ]
+      // token to token不需要eth value是null
       value = null
     }
 
     setAttemptingTxn(true)
+    // 获取gas费用
     await estimate(...args, value ? { value } : {})
       .then(estimatedGasLimit =>
-        // 执行具体的contract方法
+        // 执行具体的合约方法
         method(...args, {
           ...(value ? { value } : {}),
           gasLimit: calculateGasMargin(estimatedGasLimit)
         }).then(response => {
+          // response是获取合约方法响应数据
+
           setAttemptingTxn(false)
 
           addTransaction(response, {
