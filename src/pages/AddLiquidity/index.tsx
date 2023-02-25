@@ -44,6 +44,7 @@ export default function AddLiquidity({
   },
   history
 }: RouteComponentProps<{ currencyIdA?: string; currencyIdB?: string }>) {
+  // 使用Web3React获取account, chainId信息
   const { account, chainId, library } = useActiveWeb3React()
   const theme = useContext(ThemeContext)
 
@@ -278,6 +279,7 @@ export default function AddLiquidity({
   }
 
   const modalBottom = () => {
+    // 确认创建lq池子 or 确认支付token
     return (
       <ConfirmAddModalBottom
         price={price}
@@ -358,6 +360,7 @@ export default function AddLiquidity({
             pendingText={pendingText}
           />
           <AutoColumn gap="20px">
+            {/*第一次添加流动性的文案提示*/}
             {noLiquidity && (
               <ColumnCenter>
                 <BlueCard>
@@ -402,6 +405,9 @@ export default function AddLiquidity({
               onUserInput={onFieldBInput}
               onCurrencySelect={handleCurrencyBSelect}
               onMax={() => {
+                // 获取最大tokenB amount
+                // 调用dispatch
+                // reducer 处理 typeInput
                 onFieldBInput(maxAmounts[Field.CURRENCY_B]?.toExact() ?? '')
               }}
               showMaxButton={!atMaxAmounts[Field.CURRENCY_B]}

@@ -95,6 +95,7 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
   ])
 }
 
+// 方法名(参数名 : 参数类型) : 返回类型1｜返回类型2
 export function useCurrency(currencyId: string | undefined): Currency | null | undefined {
   const isETH = currencyId?.toUpperCase() === 'ETH'
   const token = useToken(isETH ? undefined : currencyId)

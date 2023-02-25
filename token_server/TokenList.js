@@ -21,10 +21,12 @@ http.createServer( function (request, response) {
       // HTTP 状态码: 404 : NOT FOUND
       // Content Type: text/html
       response.writeHead(404, {'Content-Type': 'text/html'});
+      response.writeHead(200, {'Access-Control-Allow-Origin':'*'});
     }else{
       // HTTP 状态码: 200 : OK
       // Content Type: text/html
       response.writeHead(200, {'Content-Type': 'text/html'});
+      response.writeHead(200, {'Access-Control-Allow-Origin':'*'});
 
       // 响应文件内容
       response.write(data.toString());

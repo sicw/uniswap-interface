@@ -125,8 +125,10 @@ export function ConfirmationModalContent({
           <Text fontWeight={500} fontSize={20}>
             {title}
           </Text>
+          {/*确认框的x关闭*/}
           <CloseIcon onClick={onDismiss} />
         </RowBetween>
+        {/*相关交易信息*/}
         {topContent()}
       </Section>
       <BottomSection gap="12px">{bottomContent()}</BottomSection>

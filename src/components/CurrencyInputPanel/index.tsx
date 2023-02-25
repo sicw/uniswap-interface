@@ -113,7 +113,7 @@ const StyledBalanceMax = styled.button`
     margin-right: 0.5rem;
   `};
 `
-
+// 函数组件的props 输入面板
 interface CurrencyInputPanelProps {
   value: string
   onUserInput: (value: string) => void
@@ -187,6 +187,7 @@ export default function CurrencyInputPanel({
             </RowBetween>
           </LabelRow>
         )}
+        {/*token数量输入框*/}
         <InputRow style={hideInput ? { padding: '0', borderRadius: '8px' } : {}} selected={disableCurrencySelect}>
           {!hideInput && (
             <>
@@ -202,6 +203,7 @@ export default function CurrencyInputPanel({
               )}
             </>
           )}
+          {/*下拉选择token*/}
           <CurrencySelect
             selected={!!currency}
             className="open-currency-select-button"
@@ -239,6 +241,7 @@ export default function CurrencyInputPanel({
         <CurrencySearchModal
           isOpen={modalOpen}
           onDismiss={handleDismissSearch}
+          // 选择token后的处理器
           onCurrencySelect={onCurrencySelect}
           showSendWithSwap={showSendWithSwap}
           hiddenCurrency={currency}

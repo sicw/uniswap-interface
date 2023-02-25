@@ -61,6 +61,7 @@ export function listToTokenMap(list: TokenList): TokenAddressMap {
 export function useTokenList(url: string): TokenAddressMap {
   const lists = useSelector<AppState, AppState['lists']['byUrl']>(state => state.lists.byUrl)
   return useMemo(() => {
+    // list[url] && list[url].current ? list[url] : undefined
     const current = lists[url]?.current
     if (!current) return EMPTY_LIST
     return listToTokenMap(current)
@@ -75,6 +76,7 @@ export function useDefaultTokenList(): TokenAddressMap {
 export function useAllLists(): TokenList[] {
   const lists = useSelector<AppState, AppState['lists']['byUrl']>(state => state.lists.byUrl)
 
+  debugger
   return useMemo(
     () =>
       Object.keys(lists)

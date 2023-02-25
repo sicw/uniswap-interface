@@ -33,6 +33,7 @@ interface CurrencySearchModalProps {
   showCommonBases?: boolean
 }
 
+// token选择组件
 export default function CurrencySearchModal({
   isOpen,
   onDismiss,
