@@ -66,6 +66,7 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
   const symbolBytes32 = useSingleCallResult(token ? undefined : tokenContractBytes32, 'symbol', undefined, NEVER_RELOAD)
   const decimals = useSingleCallResult(token ? undefined : tokenContract, 'decimals', undefined, NEVER_RELOAD)
 
+  // 有个依赖列表, 只有当依赖列表变化时, 才会触发渲染更新
   return useMemo(() => {
     if (token) return token
     if (!chainId || !address) return undefined

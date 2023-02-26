@@ -17,6 +17,7 @@ export function useMintState(): AppState['mint'] {
   return useSelector<AppState, AppState['mint']>(state => state.mint)
 }
 
+// function 函数名(参数名1:参数类型1,参数名2:参数类型2):返回值类型 {函数体}
 export function useDerivedMintInfo(
   currencyA: Currency | undefined,
   currencyB: Currency | undefined
@@ -33,8 +34,10 @@ export function useDerivedMintInfo(
   poolTokenPercentage?: Percent
   error?: string
 } {
+  // 获取账户信息 和 区块链ID
   const { account, chainId } = useActiveWeb3React()
 
+  // 获取mint信息
   const { independentField, typedValue, otherTypedValue } = useMintState()
 
   const dependentField = independentField === Field.CURRENCY_A ? Field.CURRENCY_B : Field.CURRENCY_A
