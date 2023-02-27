@@ -11,11 +11,13 @@ export default function Updater(): null {
   const lists = useSelector<AppState, AppState['lists']['byUrl']>(state => state.lists.byUrl)
 
   // we should always fetch the default token list, so add it
+  // 获取默认的token list并添加
   useEffect(() => {
     if (!lists[DEFAULT_TOKEN_LIST_URL]) dispatch(addList(DEFAULT_TOKEN_LIST_URL))
   }, [dispatch, lists])
 
   // on initial mount, refetch all the lists in storage
+  // 挂载后执行token list初始化操作, 刷新所有token list到storage中
   useEffect(() => {
     Object.keys(lists).forEach(listUrl => dispatch(fetchTokenList(listUrl) as any))
     // we only do this once
@@ -23,6 +25,7 @@ export default function Updater(): null {
   }, [dispatch])
 
   // whenever a list is not loaded and not loading, try again to load it
+  // 无论何时, token list还没有加载并且没有正在加载时, 尝试加载它.
   useEffect(() => {
     Object.keys(lists).forEach(listUrl => {
       const list = lists[listUrl]

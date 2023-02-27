@@ -49,7 +49,9 @@ window.addEventListener('error', error => {
 function Updaters() {
   return (
     <>
+      {/*token list数据*/}
       <ListsUpdater />
+      {/*用户相关数据*/}
       <UserUpdater />
       <ApplicationUpdater />
       <TransactionUpdater />
@@ -64,6 +66,7 @@ ReactDOM.render(
     <Web3ReactProvider getLibrary={getLibrary}>
       <Web3ProviderNetwork getLibrary={getLibrary}>
         <Provider store={store}>
+          {/*更新各种state数据*/}
           <Updaters />
           <ThemeProvider>
             <>

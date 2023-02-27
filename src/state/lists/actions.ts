@@ -37,6 +37,7 @@ async function getTokenList(listUrl: string): Promise<TokenList> {
 }
 
 const fetchCache: { [url: string]: Promise<TokenList> } = {}
+
 export const fetchTokenList = createAsyncThunk<TokenList, string>(
   'lists/fetchTokenList',
   (url: string) =>
