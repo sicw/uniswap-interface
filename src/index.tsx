@@ -46,6 +46,7 @@ window.addEventListener('error', error => {
   })
 })
 
+// 函数内部使用useEffect加载各个数据
 function Updaters() {
   return (
     <>

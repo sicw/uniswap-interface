@@ -40,7 +40,10 @@ export default function Updater() {
       .then(blockNumberCallback)
       .catch(error => console.error(`Failed to get block number for chainId: ${chainId}`, error))
 
+    // DidMount之后执行, 添加监听block
     library.on('block', blockNumberCallback)
+
+    // DidUnmount之后执行, 移除监听block
     return () => {
       library.removeListener('block', blockNumberCallback)
     }
