@@ -44,6 +44,7 @@ export default function CurrencyLogo({
   size?: string
   style?: React.CSSProperties
 }) {
+  // 为了重新render, 所以更新function内的的state
   const [, refresh] = useState<number>(0)
 
   if (currency === ETHER) {
@@ -74,6 +75,7 @@ export default function CurrencyLogo({
           src={uri}
           size={size}
           onError={() => {
+            // 如果不处理默认就是裂图了, 如果调用了refresh更新state, 会重新render这时BAD_URIS[uri] = true就会走think图标
             if (currency instanceof Token) {
               BAD_URIS[uri] = true
             }

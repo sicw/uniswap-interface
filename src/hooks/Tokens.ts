@@ -15,6 +15,7 @@ export function useAllTokens(): { [address: string]: Token } {
   const allTokens = useDefaultTokenList()
 
   return useMemo(() => {
+    // 查询和当前chainId匹配的token list
     if (!chainId) return {}
     return (
       userAddedTokens
@@ -26,6 +27,13 @@ export function useAllTokens(): { [address: string]: Token } {
           },
           // must make a copy because reduce modifies the map, and we do not
           // want to make a copy in every iteration
+          // ...allTokens先复制出一个allTokens对象, 然后取chainId=97的token
+          // 一个例子 ...object, 外面需要用{}包起来
+          /**
+            let m = {'1':1,'97':{'x':0}};
+            let x = {...m['97']}
+            console.log(x); // { x: 0 }
+           */
           { ...allTokens[chainId] }
         )
     )
