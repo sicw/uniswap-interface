@@ -29,7 +29,7 @@ export function usePairs(currencies: [Currency | undefined, Currency | undefined
     [chainId, currencies]
   )
 
-  // 根据token获取pair地址
+  // 根据tokenX获取pair地址
   const pairAddresses = useMemo(
     () =>
       tokens.map(([tokenA, tokenB]) => {
@@ -40,8 +40,10 @@ export function usePairs(currencies: [Currency | undefined, Currency | undefined
 
   const results = useMultipleContractSingleData(pairAddresses, PAIR_INTERFACE, 'getReserves')
 
+  // tokens:[[Token1,Token2],[Token2,Token3]]
   return useMemo(() => {
     return results.map((result, i) => {
+      // 从result中获取'result'字段的数据并赋值给reserves
       const { result: reserves, loading } = result
       const tokenA = tokens[i][0]
       const tokenB = tokens[i][1]

@@ -43,7 +43,7 @@ function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {
     [tokenA, tokenB, bases]
   )
 
-  // 根据查到的[Token1,Token2]token对, 查询合约获取对应的pair信息
+  // 根据合并的token对[Token1,Token2], 查询合约获取对应的pair信息
   const allPairs = usePairs(allPairCombinations)
 
   // only pass along valid pairs, non-duplicated pairs
@@ -52,8 +52,10 @@ function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {
       Object.values(
         allPairs
           // filter out invalid pairs
+          // filter函数接收一个函数类型 (参数是result):(返回值是result类型是[EXISTS,Pair]) => 函数体是Boolean(result[0] === PairState.EXISTS && result[1])
           .filter((result): result is [PairState.EXISTS, Pair] => Boolean(result[0] === PairState.EXISTS && result[1]))
           // filter out duplicated pairs
+          // 过滤重复pairs 使用memo做为map过滤相同lq address
           .reduce<{ [pairAddress: string]: Pair }>((memo, [, curr]) => {
             memo[curr.liquidityToken.address] = memo[curr.liquidityToken.address] ?? curr
             return memo
