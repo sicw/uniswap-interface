@@ -19,6 +19,7 @@ export enum PairState {
 export function usePairs(currencies: [Currency | undefined, Currency | undefined][]): [PairState, Pair | null][] {
   const { chainId } = useActiveWeb3React()
 
+  // 包装成token
   const tokens = useMemo(
     () =>
       currencies.map(([currencyA, currencyB]) => [
@@ -28,6 +29,7 @@ export function usePairs(currencies: [Currency | undefined, Currency | undefined
     [chainId, currencies]
   )
 
+  // 根据token获取pair地址
   const pairAddresses = useMemo(
     () =>
       tokens.map(([tokenA, tokenB]) => {
