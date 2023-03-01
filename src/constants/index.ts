@@ -16,6 +16,15 @@ export const USDT = new Token(ChainId.MAINNET, '0xdAC17F958D2ee523a2206206994597
 export const COMP = new Token(ChainId.MAINNET, '0xc00e94Cb662C3520282E6f5717214004A7f26888', 18, 'COMP', 'Compound')
 export const MKR = new Token(ChainId.MAINNET, '0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2', 18, 'MKR', 'Maker')
 
+// TKB也可作为中间token
+export const TKB = new Token(ChainId.BSCTESTNET, '0xE4Ff29e29bE2CF89e059794a4cFA674333e9412E', 18, 'TKB', 'TokenB')
+export const TKC = new Token(ChainId.BSCTESTNET, '0x2fdEcF74668AAa8491AC57eC19B8ee40D5246981', 18, 'TKC', 'TokenC')
+
+/**
+ * 对象类型
+ * 1:[token1, token2, token3]
+ * 97:[token5, token6]
+ */
 const WETH_ONLY: ChainTokenList = {
   [ChainId.MAINNET]: [WETH[ChainId.MAINNET]],
   [ChainId.ROPSTEN]: [WETH[ChainId.ROPSTEN]],
@@ -28,7 +37,10 @@ const WETH_ONLY: ChainTokenList = {
 // used to construct intermediary pairs for trading
 export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   ...WETH_ONLY,
-  [ChainId.MAINNET]: [...WETH_ONLY[ChainId.MAINNET], DAI, USDC, USDT, COMP, MKR]
+  // MAINNET 在WETH基础上添加了DAI, USDC, USDT, COMP, MKR做为base token
+  [ChainId.MAINNET]: [...WETH_ONLY[ChainId.MAINNET], DAI, USDC, USDT, COMP, MKR],
+  // [ChainId.BSCTESTNET]: [...WETH_ONLY[ChainId.BSCTESTNET], TKB], // 添加TKB做为中间token进行swap
+  [ChainId.BSCTESTNET]: [TKB,TKC]
 }
 
 // used for display in the default list when adding liquidity
