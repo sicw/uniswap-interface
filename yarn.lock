@@ -2058,10 +2058,10 @@
   dependencies:
     "any-observable" "^0.3.0"
 
-"@sicwen/uniswap-sdk-bsctestnet@^1.0.0":
-  "integrity" "sha512-s0aXPFdEGDwD/ebs5eW+/9OdWrQWWfxU2lkcOfQKSHIAo+2LXFsl29VCDVdBkMvEpE6oRgjiyuzUj2JLrIXn2A=="
-  "resolved" "https://registry.npmmirror.com/@sicwen/uniswap-sdk-bsctestnet/-/uniswap-sdk-bsctestnet-1.0.0.tgz"
-  "version" "1.0.0"
+"@sicwen/uniswap-sdk-bsctestnet@^1.0.1":
+  "integrity" "sha512-qVwx6BQdb0iIb6qir7GynukkgdaTmUyerTpY6zjwcRCTVQeyMRp5JXXSNngUT5w4b5AQ9RGMIboiH2VMrcxdBQ=="
+  "resolved" "https://registry.npmjs.org/@sicwen/uniswap-sdk-bsctestnet/-/uniswap-sdk-bsctestnet-1.0.1.tgz"
+  "version" "1.0.1"
   dependencies:
     "@uniswap/v2-core" "^1.0.0"
     "big.js" "^5.2.2"
@@ -6611,6 +6611,7 @@
     "setimmediate" "^1.0.5"
 
 "ethereumjs-abi@git+https://github.com/ethereumjs/ethereumjs-abi.git":
+  "integrity" "sha512-qs8G5KwnIO/thOQjv1RvR/4oiTsy6IaCsN+ory5dbiqFXz8sd239aWJH0wmsVNPimL5X1KzQheUpi6xAo6FU4w=="
   "resolved" "git+ssh://git@github.com/ethereumjs/ethereumjs-abi.git#ee3994657fa7a427238e6ba92a84d0b529bbcde0"
   "version" "0.6.8"
   dependencies:
