@@ -40,7 +40,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   // MAINNET 在WETH基础上添加了DAI, USDC, USDT, COMP, MKR做为base token
   [ChainId.MAINNET]: [...WETH_ONLY[ChainId.MAINNET], DAI, USDC, USDT, COMP, MKR],
   // [ChainId.BSCTESTNET]: [...WETH_ONLY[ChainId.BSCTESTNET], TKB], // 添加TKB做为中间token进行swap
-  [ChainId.BSCTESTNET]: [TKB,TKC]
+  [ChainId.BSCTESTNET]: [...WETH_ONLY[ChainId.BSCTESTNET], TKB, TKC]
 }
 
 // used for display in the default list when adding liquidity
