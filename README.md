@@ -12,3 +12,8 @@
     - npm run start
 - [合约地址](https://github.com/sicw/uniswap-v2-contracts)
 - [新增chainId](https://github.com/sicw/uniswap-v2-sdk)
+
+- webstorm启动后端调试
+-- npm run start 正常启动服务
+-- 编辑configuration add JavaScriptDebug
+-- url: http://localhost:3000
