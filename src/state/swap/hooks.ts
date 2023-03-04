@@ -127,6 +127,7 @@ export function useDerivedSwapInfo(): {
   // 最佳交易的output
   const bestTradeExactOut = useTradeExactOut(inputCurrency ?? undefined, !isExactIn ? parsedAmount : undefined)
 
+  // 可能会返回多个路径Trade,第一个是最优的[Trade1,Trade2,...]
   const v2Trade = isExactIn ? bestTradeExactIn : bestTradeExactOut
 
   const currencyBalances = {

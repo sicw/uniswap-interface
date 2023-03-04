@@ -60,12 +60,14 @@ function useSwapCallArguments(
     const tradeVersion = getTradeVersion(trade)
     if (!trade || !recipient || !library || !account || !tradeVersion || !chainId) return []
 
+    // 获取v2版本的router contract地址
     const contract: Contract | null =
       tradeVersion === Version.v2 ? getRouterContract(chainId, library, account) : v1Exchange
     if (!contract) {
       return []
     }
 
+    // 这里一般是两个methods, swapExactETHForTokens, swapExactETHForTokensSupportingFeeOnTransferTokens
     const swapMethods = []
 
     switch (tradeVersion) {
@@ -199,6 +201,7 @@ export function useSwapCallback(
           gasEstimate
         } = successfulEstimation
 
+        // 调用合约方法
         return contract[methodName](...args, {
           gasLimit: calculateGasMargin(gasEstimate),
           ...(value && !isZero(value) ? { value, from: account } : { from: account })
