@@ -168,6 +168,7 @@ export default function Swap() {
   const atMaxAmountInput = Boolean(maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput))
 
   // the callback to execute the swap
+  // 给callback 起别名 swapCallback
   const { callback: swapCallback, error: swapCallbackError } = useSwapCallback(
     trade,
     allowedSlippage,
@@ -185,6 +186,7 @@ export default function Swap() {
       return
     }
     setSwapState({ attemptingTxn: true, tradeToConfirm, showConfirm, swapErrorMessage: undefined, txHash: undefined })
+    // 返回promise带着执行成功的response.hash
     swapCallback()
       .then(hash => {
         setSwapState({ attemptingTxn: false, tradeToConfirm, showConfirm, swapErrorMessage: undefined, txHash: hash })

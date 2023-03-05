@@ -142,6 +142,8 @@ export function useSwapCallback(
     return {
       state: SwapCallbackState.VALID,
       callback: async function onSwap(): Promise<string> {
+        // Promise.all返回一个promise, 再使用.then就是等待内部的所有promise都处于'完成'
+        // 估算gas消耗
         const estimatedCalls: EstimatedSwapCall[] = await Promise.all(
           swapCalls.map(call => {
             const {
@@ -150,6 +152,10 @@ export function useSwapCallback(
             } = call
             const options = !value || isZero(value) ? {} : { value }
 
+            // 这里返回的是promise,它的resolve的参数就是下面then中return{call, gasEstimate}
+            // const result = await invokeFunc('123') 得到的result的就是invokeFunc返回promise中resolve的参数,然后使用这个参数继续往下执行,看起来就是同步的代码.
+            // 如下代码写成 const r = contract.estimateGas[methodName](...args, options)
+            // 那么r = gasEstimate的值. 但是这样就没法处理exception了, 所以这里使用.then .catch的形成能处理更多case.
             return contract.estimateGas[methodName](...args, options)
               .then(gasEstimate => {
                 return {
@@ -202,6 +208,7 @@ export function useSwapCallback(
         } = successfulEstimation
 
         // 调用合约方法
+        // 合约 方法名 参数 gas限制
         return contract[methodName](...args, {
           gasLimit: calculateGasMargin(gasEstimate),
           ...(value && !isZero(value) ? { value, from: account } : { from: account })
@@ -225,6 +232,7 @@ export function useSwapCallback(
             const withVersion =
               tradeVersion === Version.v2 ? withRecipient : `${withRecipient} on ${(tradeVersion as any).toUpperCase()}`
 
+            // 更新transaction的state
             addTransaction(response, {
               summary: withVersion
             })
